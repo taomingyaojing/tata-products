@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>獭獭救场</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(160deg, #14142a 0%, #1a1a2e 50%, #0f0f1a 100%);
+    color: #eee;
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; }
+  .logo { font-size: 56px; text-align:center; }
+  h1 { font-size: 28px; text-align:center; margin: 12px 0 4px; }
+  .sub { text-align:center; color:#9aa; font-size: 14px; margin-bottom: 28px; }
+  .download {
+    display:block; text-align:center; text-decoration:none;
+    background: linear-gradient(135deg, #e53935, #ff7043);
+    color:#fff; font-size:18px; font-weight:bold;
+    padding:16px 24px; border-radius:14px; margin: 0 auto 8px;
+    box-shadow: 0 6px 20px rgba(229,57,53,.35);
+  }
+  .download small { display:block; font-size:12px; font-weight:normal; opacity:.85; margin-top:4px; }
+  .hint { text-align:center; color:#888; font-size:12px; margin-bottom: 28px; }
+  .card {
+    background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+    border-radius:16px; padding:18px; margin-bottom:14px;
+  }
+  .card h2 { font-size:16px; margin-bottom:10px; }
+  .feature { display:flex; align-items:flex-start; gap:10px; padding:8px 0; }
+  .feature .ico { font-size:22px; }
+  .feature .t { font-weight:600; font-size:15px; }
+  .feature .d { color:#9aa; font-size:13px; margin-top:2px; }
+  ol.steps { padding-left:20px; color:#ccc; font-size:14px; line-height:1.9; }
+  .tag { display:inline-block; background:rgba(124,232,160,.15); color:#7ce8a0;
+         font-size:11px; padding:2px 8px; border-radius:10px; margin-left:6px; }
+
+  /* 微信内引导遮罩 */
+  #wx-mask {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.86);
+    z-index: 9999;
+    display: none;
+  }
+  #wx-mask.show { display: block; }
+  .wx-arrow {
+    position: absolute; top: 4px; right: 16px;
+    font-size: 76px; line-height: 1;
+    animation: wx-bounce 1.1s ease-in-out infinite;
+  }
+  @keyframes wx-bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+  }
+  .wx-tip {
+    position: absolute; top: 130px; left: 0; right: 0;
+    text-align: center; color: #fff;
+    padding: 0 32px;
+  }
+  .wx-tip .t { font-size: 21px; font-weight: 700; margin-bottom: 14px; }
+  .wx-tip .b { font-size: 16px; line-height: 1.9; color: #ddd; }
+  .wx-tip .b b { color: #ffd54f; font-size: 18px; }
+  .wx-tip button {
+    margin-top: 24px; background: #4a6cf7; color: #fff; border: 0;
+    padding: 11px 30px; border-radius: 24px; font-size: 15px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">🦦</div>
+  <h1>獭獭救场</h1>
+  <div class="sub">假来电 · 反骚扰 · 体面开溜</div>
+
+  <a class="download" href="/legalcall.apk">
+    ⬇️ 立即下载 APK
+    <small>v1.3 · Android 7.0+ · 约 8.4 MB</small>
+  </a>
+  <div class="hint">📊 已下载 <b>__DOWNLOAD_COUNT__</b> 次</div>
+  <div class="hint">微信里打不开？点右上角「···」→ 用浏览器打开</div>
+
+  <div class="card">
+    <h2>✨ 核心功能</h2>
+    <div class="feature"><span class="ico">🛡️</span><div><div class="t">话术自保</div><div class="d">告知已录音 / 礼貌核实 / 要求书面函件，接听后自动播报</div></div></div>
+    <div class="feature"><span class="ico">🚨</span><div><div class="t">一键脱身</div><div class="d">弹出一通假来电（老板 / 客户 / 家人 / 快递），体面挂断骚扰</div></div></div>
+    <div class="feature"><span class="ico">🆘</span><div><div class="t">悬浮球脱身</div><div class="d">屏幕悬浮球，点一下立即脱身</div></div></div>
+    <div class="feature"><span class="ico">⏰</span><div><div class="t">定时脱身 <span class="tag">高级版</span></div><div class="d">设个时间，到点自动弹出假来电</div></div></div>
+    <div class="feature"><span class="ico">🔒</span><div><div class="t">隐私自证</div><div class="d">核心功能纯本地，不偷传你的信息</div></div></div>
+  </div>
+
+  <div class="card">
+    <h2>📥 安装步骤</h2>
+    <ol class="steps">
+      <li>点上方按钮下载 APK</li>
+      <li>打开时提示「未知来源」，允许即可</li>
+      <li>首次打开授权「电话」权限（自动播报需要）</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>🔑 解锁高级版（1 元）</h2>
+    <ol class="steps">
+      <li>App 内点「赞赏 1 元解锁」，机器码自动复制</li>
+      <li>微信转账 1 元并备注机器码</li>
+      <li>回到 App 点「刷新激活状态」，自动联网解锁</li>
+    </ol>
+  </div>
+
+  <div class="hint" style="margin-top:24px;">独立发行 · 不上架商店 · 请勿用于违法用途</div>
+</div>
+
+<div id="wx-mask">
+  <div class="wx-arrow">☝️</div>
+  <div class="wx-tip">
+    <div class="t">微信内无法直接下载</div>
+    <div class="b">点右上角 <b>「···」</b><br>选择 <b>「在浏览器打开」</b></div>
+    <button onclick="document.getElementById('wx-mask').style.display='none'">我知道了</button>
+  </div>
+</div>
+<script>
+(function(){
+  if (/MicroMessenger/i.test(navigator.userAgent)) {
+    document.getElementById('wx-mask').classList.add('show');
+  }
+})();
+</script>
+</body>
+</html>

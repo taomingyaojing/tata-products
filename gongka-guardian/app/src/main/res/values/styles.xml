@@ -1,0 +1,9 @@
+<resources>
+    <!-- 主界面主题 -->
+    <style name="Theme.GongkaGuardian" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <!-- 全屏报警界面主题（AlarmActivity extends Activity，用系统主题） -->
+    <style name="Theme.GongkaGuardian.Alarm" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

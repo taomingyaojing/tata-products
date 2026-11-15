@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ================================================================
+         权限清单（商业级完整声明，按需精简）
+         注意：Android 12+ 蓝牙权限、Android 13+ 通知权限、Android 14+ 前台服务类型
+         都需要运行时动态申请，仅声明 manifest 不够，见 GkaApplication/首次引导
+    ================================================================ -->
+
+    <!-- 网络：崩溃日志上报到服务器（内置错误收集） -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 定位：BLE 扫描在 Android 6.0+ 必须持有定位权限才能拿到扫描结果 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 后台定位：Android 10+ 地理围栏后台触发（EXIT）必需，且要在申请前台定位后再单独申请 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- 蓝牙：旧版（Android 11 及以下） -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <!-- 蓝牙：新版（Android 12+）。
+         注意：不能加 neverForLocation！iBeacon 属位置信标，声明 neverForLocation 会被系统过滤掉广播。
+         需同时申请 ACCESS_FINE_LOCATION 才能拿到 iBeacon 广播结果 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- 前台服务 + 定位型前台服务（Android 14 起必须声明 foregroundServiceType） -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- specialUse 类型：无合适类型时使用，需在 service 里声明用途 property -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- 开机自启（国产机多被限制，需配合引导用户加入自启动白名单） -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- WiFi：读取当前连接的 SSID（用于 WiFi 断开监听） -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- 报警三件套：振动 / 唤醒锁 / 调节媒体音量 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- 通知（Android 13+ 运行时申请） -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- 活动识别（Android 10+ 系统级，无 GMS 走加速度传感器方案时可不声明但建议保留） -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <!-- 忽略电池优化：国产机保活核心，弹系统框请求加入白名单 -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- 悬浮窗/锁屏覆盖：强力报警界面需要在锁屏/后台顶起全屏 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:name=".GkaApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.GongkaGuardian">
+
+        <!-- 主界面：配置家坐标 / 绑定工卡 / 查看状态 -->
+        <activity android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 强力报警全屏界面：
+             showWhenLocked + turnScreenOn 保证锁屏下也能顶起
+             launchMode=singleTask 避免重复实例 -->
+        <activity android:name=".alert.AlarmActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.GongkaGuardian.Alarm" />
+
+        <!-- 常驻前台服务：三道防线的大脑，持常驻通知。
+             Android 14+ 必须声明 type，用 specialUse 避免定位权限未授予时崩溃 -->
+        <service android:name=".service.GkaForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="出门忘带工卡检测守护" />
+        </service>
+
+        <!-- 开机自启 -->
+        <receiver android:name=".receiver.BootReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 地理围栏触发接收器 -->
+        <receiver android:name=".receiver.GeofenceReceiver"
+            android:exported="true" />
+
+    </application>
+
+</manifest>
